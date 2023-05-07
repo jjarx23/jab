@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <stdio.h>
 #include <math.h>
 #include <Flow.h>
 #include "jab.h"
@@ -29,18 +30,20 @@ static void __attribute__((constructor)) jabClassf()
     if (jab__.jDbl == NULL)
     {
         jab__.jDbl = (void *)-1;
-        Flow->one = &one;
-        Flow->zero = &zero;
+        mutVoidPtr(&Flow.constants.one, &one);
+        mutVoidPtr(&Flow.constants.zero, &zero);
 
-        Flow->stringOf = stringOf;
-        Flow->add = add;
-        DFlow->add = dAdd;
-        Flow->subtract = subtract;
-        DFlow->subtract = dSubtract;
-        Flow->multiply = mul;
-        DFlow->multiply = dMul;
-        Flow->divide = divide;
-        DFlow->divide = dDiv;
+        mutVoidPtr(&Flow.util.stringOf, stringOf);
+        const struct FlowOp *ops = &Flow.math;
+        const struct FlowOp *dops = &Flow.deriv;
+        mutVoidPtr(&ops->add, add);
+        mutVoidPtr(&dops->add, dAdd);
+        mutVoidPtr(&ops->subtract, subtract);
+        mutVoidPtr(&dops->subtract, dSubtract);
+        mutVoidPtr(&ops->multiply, mul);
+        mutVoidPtr(&dops->multiply, dMul);
+        mutVoidPtr(&ops->divide, divide);
+        mutVoidPtr(&dops->divide, dDiv);
     }
 }
 void static jdblConst()
@@ -220,7 +223,7 @@ static void *divide(void *a, void *b)
     }
     else if (b == &zero)
     {
-        printf("division by zero\n");
+        fatalErr("jab: division by zero\n");
     }
     return jabOp(a, b, divfn);
 }

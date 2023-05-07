@@ -31,10 +31,12 @@ ALL: PREBUILD APP POSTBUILD
 	@echo $(OUT) built
 	@echo
 
-PREBUILD:
-	@mkdir -p $(OBJDIRS)
+PREBUILD: $(OBJDIRS)
 	@echo created obj dirs: $(OBJDIRS)
 	@echo
+
+%/:
+	@mkdir -p $@
 
 APP: $(OBJ)
 ifeq ($(as), static)
@@ -47,7 +49,44 @@ endif
 $(OBJDIR)%.o:%.c
 	@$(CC) $(CFLAGS) $^ -o $@
 	@echo $@ built
+	@echo $(CFLAGS)
+
+POSTBUILD:
+	@mv $(OUT) $$HOME
+	@chmod +x $$HOME/$(OUT)
+	@echo done!
 	@echo
+
+clean:
+	@rm -r $(OBJDIR)
+	@echo $(OBJDIR) cleaned
+	@echo
+
+.PHONY: ALL PREBUILD APP POSTBUILD clean
+
+ALL: PREBUILD APP POSTBUILD
+	@echo $(OUT) built
+	@echo
+
+PREBUILD: $(OBJDIRS)
+	@echo created obj dirs: $(OBJDIRS)
+	@echo
+
+%/:
+	@mkdir -p $@
+
+APP: $(OBJ)
+ifeq ($(as), static)
+	@arc rcs $(OUT) $^
+else
+	@$(CC) $(LDFLAGS) $^ -o $(OUT)
+endif
+	@echo
+
+$(OBJDIR)%.o:%.c
+	@$(CC) $(CFLAGS) $^ -o $@
+	@echo $@ built
+	@echo $(CFLAGS)
 
 POSTBUILD:
 	@mv $(OUT) $$HOME

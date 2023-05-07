@@ -15,24 +15,12 @@ static void cstr(void *obj, va_list *arg)
 {
     JDbl_t o = obj;
     setN(o, va_arg(*arg, double));
-    // printf("JDbl constructor \n");
 }
 static int rpr(const void *b, char *str, int length)
 {
     JDbl_t o = (JDbl_t)b;
     return snprintf(str, length, "%g", o->n);
 }
-/*
-//implement if necessary
-
-static void dstr(void *obj){
-    printf("JDbl destructor \n");
-}
-//other implentation go here
-static int rpr(const void *b, char *str, int length){
-    return printf("JDbl %p \n", b);
-}
-*/
 static JDblClass_st Class;
 const void *JDbl = 0;
 
