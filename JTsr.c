@@ -3,6 +3,7 @@
 #include <string.h>
 #include "JTsr.h"
 #include "JTsr.r.h"
+#define UNIT_NAME "JTnsr"
 
 static JTsrClass_st Class;
 const void *JTsr = 0;
@@ -16,6 +17,8 @@ static void __attribute__((constructor)) jtsrClassf()
     memcpy((void *)JTsr, Obj, sizeof(ObjClass_st));
     (*(ObjClass_t)&Class).size = sizeof(JTsr_st);
     (*(ObjClass_t)&Class).super = Obj;
-    (*(ObjClass_t)&Class).rpr = 0;
+    (*(ObjClass_t)&Class).rpr = 0;    
+    static const char name[] = UNIT_NAME;
+    (*(ObjClass_t)&Class).name = name;
     // rpr;
 }

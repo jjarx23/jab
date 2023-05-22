@@ -5,6 +5,7 @@
 #include <Flow.h>
 #include "JDbl.h"
 #include "JDbl.r.h"
+#define UNIT_NAME "JDbl"
 
 static void *jdbl(double d)
 {
@@ -32,6 +33,8 @@ static void __attribute__((constructor)) jdblClassf()
     mut(JDbl, void *, &Class);
     memcpy((void *)JDbl, Obj, sizeof(ObjClass_st));
     (*(ObjClass_t)&Class).size = sizeof(JDbl_st);
+    static const char name[] = UNIT_NAME;
+    (*(ObjClass_t)&Class).name = name;
     (*(ObjClass_t)&Class).super = Obj;
     (*(ObjClass_t)&Class).cstr = cstr;
     (*(ObjClass_t)&Class).rpr = rpr;
