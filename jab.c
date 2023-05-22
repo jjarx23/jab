@@ -19,6 +19,10 @@ static void *mul(void *a, void *b);
 static void *dMul(void *a, void *b, void *op);
 static void *divide(void *a, void *b);
 static void *dDiv(void *a, void *b, void *op);
+static void *xcorrelate(void *a, void *b);
+static void *dXcorrelate(void *a, void *b, void *op);
+static void *dot(void *a, void *b);
+static void *dDot(void *a, void *b, void *op);
 
 /*---------------------declarations---------------------*/
 
@@ -44,6 +48,10 @@ static void __attribute__((constructor)) jabClassf()
         mutVoidPtr(&dops->multiply, dMul);
         mutVoidPtr(&ops->divide, divide);
         mutVoidPtr(&dops->divide, dDiv);
+        mutVoidPtr(&ops->xcorrelate, xcorrelate);
+        mutVoidPtr(&dops->xcorrelate, dXcorrelate);
+        mutVoidPtr(&ops->dot, dot);
+        mutVoidPtr(&dops->dot, dDot);
     }
 }
 void static jdblConst()
@@ -271,3 +279,18 @@ static void *dMul(void *a, void *b, void *op)
     }
 }
 /*---------------------BEDMAS---------------------*/
+static void *xcorrelate(void *a, void *b)
+{
+    if(isDbl(a)||isDbl(b))return mul(a,b);
+}
+static void *dXcorrelate(void *a, void *b, void *op)
+{
+        if(isDbl(a)||isDbl(b))return dMul(a,b, op);
+}
+static void *dot(void *a, void *b)
+{    if(isDbl(a)||isDbl(b))return mul(a,b);
+}
+static void *dDot(void *a, void *b, void *op)
+{    if(isDbl(a)||isDbl(b))return dMul(a,b,op);
+
+}
