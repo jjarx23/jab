@@ -14,6 +14,10 @@ extern 'C'
     extern const fn_t jlc;
     extern const fn_t jblc;
 
+static inline int isDbl(void *b){
+    return classOf(b)==JDbl;
+}
+
 #ifdef __cplusplus
 }
 #endif
