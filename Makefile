@@ -1,8 +1,8 @@
 TITLE := jab
 OUT := $(TITLE)
 CC := gcc
-CFLAGS := -c -I../Flow -I../Object
-LDFLAGS := -L$$HOME -lobj -lalloc
+CFLAGS := -c -I../flow -I../objekt
+LDFLAGS := -L$$HOME -lobjekt -lyhunk
 GCFLAGS := -ggdb -Og
 OBJDIR := ../builds/$(TITLE)_obj/
 SRCDIRS := $(wildcard */*/*/) $(wildcard */*/) $(wildcard */)
